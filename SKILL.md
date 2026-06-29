@@ -118,3 +118,10 @@ Verify what you *can* from the shell — you can't see the rendered feel:
 - `references/sticky-scene.js` — per-section scrubbed reveal timeline with safe in/out windows.
 - `references/guide-line.js` — full-document SVG line: page-pixel sizing, Catmull-Rom smoothing, seeded jitter, scroll-draw with its own lerp, relayout, static fallback, + a node verification snippet.
 - `references/orbital-core.js` — the scroll-reactive canvas centerpiece.
+
+## Runnable Example
+
+`examples/demo/` is a complete, no-build page wiring all of the above together —
+open `examples/demo/index.html` directly (or serve the folder). It's the
+assembled version of the `references/` snippets; use it to see the techniques
+working and as a starting point to copy from.

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solomei Smooth Motion Replica</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <!-- Guide line: a single path that physically threads the whole document,
+         from top to bottom. It is absolutely positioned over the full page
+         height (set in JS), so it scrolls with the content; the path geometry
+         (a right→down weave) and the draw-on-scroll are both built in JS from
+         the real page size. -->
+    <svg class="guide-line" preserveAspectRatio="none" aria-hidden="true">
+      <path data-guide-path fill="none" vector-effect="non-scaling-stroke" />
+    </svg>
+
+    <main class="page-shell">
+      <header class="topbar" aria-label="Demo header">
+        <a class="brand" href="#intro" aria-label="Back to top">
+          <span class="brand-mark">S</span>
+          <span>Smooth scroll study</span>
+        </a>
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a href="#intro">Intro</a>
+          <a href="#guide">Guide</a>
+          <a href="#memory">Memory</a>
+          <a href="#ask">Ask</a>
+        </nav>
+      </header>
+
+      <section class="hero" id="intro">
+        <div class="hero-copy">
+          <p class="eyebrow">GSAP motion replica</p>
+          <h1 data-split>Turn scrolling into a story that slowly comes into focus.</h1>
+          <p class="hero-sub">
+            This page copies none of the original content — only its motion feel: scroll progress is smoothed, words fade in word by word from blur to sharp, and the visuals drift gently behind them.
+          </p>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <canvas class="field-canvas" data-field></canvas>
+          <div class="glass-card main-card">
+            <span class="mini-label">progress</span>
+            <strong data-progress-label>0%</strong>
+            <i></i>
+          </div>
+          <div class="floating-ring"></div>
+          <div class="grain-plane"></div>
+        </div>
+      </section>
+
+      <section class="story-section" id="guide" data-accent="warm">
+        <div class="sticky-scene">
+          <div class="scene-art">
+            <div class="orb orb-a"></div>
+            <div class="orb orb-b"></div>
+            <div class="art-card">
+              <span>scroll feel</span>
+              <strong>Absolute-feeling scroll</strong>
+              <p>Native scrolling stays, but the elements on screen feel pulled along a softer timeline.</p>
+            </div>
+          </div>
+          <article class="scene-copy">
+            <p class="eyebrow">Soften the scroll</p>
+            <h2 data-split>Don't chase the wheel directly — soften the scroll progress first.</h2>
+            <p data-split>
+              The smooth feel comes from a buffer between scroll progress and visual state. Here, ScrollTrigger scrub plus a GSAP timeline let the text, cards and light all arrive half a beat late.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="story-section" id="memory" data-accent="cool">
+        <div class="sticky-scene reverse">
+          <div class="scene-art">
+            <div class="orb orb-a"></div>
+            <div class="orb orb-b"></div>
+            <div class="art-card wide">
+              <span>text reveal</span>
+              <strong>Blur text reveal</strong>
+              <p>No word simply appears — each one slowly gains its edges out of the haze.</p>
+            </div>
+          </div>
+          <article class="scene-copy">
+            <p class="eyebrow">Reveal by word</p>
+            <h2 data-split>Words enter one by one: opacity, blur and y offset, all driven by scroll.</h2>
+            <p data-split>
+              This kind of motion suits art, narrative, AI tours and product stories. It doesn't jolt the eye with big movement — it builds texture through subtle delay.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="story-section" id="ask" data-accent="rose">
+        <div class="sticky-scene">
+          <div class="scene-art">
+            <div class="orb orb-a"></div>
+            <div class="orb orb-b"></div>
+            <div class="art-card">
+              <span>interface</span>
+              <strong>Interactive surface</strong>
+              <p>A fixed prompt bar, glass surfaces and hover feedback make the page feel like a living interface.</p>
+            </div>
+          </div>
+          <article class="scene-copy">
+            <p class="eyebrow">Quiet interface</p>
+            <h2 data-split>The interactive layer stays quiet, but it is always present.</h2>
+            <p data-split>
+              The glass prompt bar mimics that Solomei-style AI guide entry: it never steals the narrative stage, yet it always leaves room to ask.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="end-panel">
+        <p class="eyebrow">Ready</p>
+        <h2 data-split>This motion can move to any story page, portfolio, or AI-guided tour.</h2>
+        <a class="round-button" href="#intro">Watch again</a>
+      </section>
+    </main>
+
+    <div class="prompt-bar" aria-label="AI prompt mock">
+      <span class="spark"></span>
+      <input value="Ask the guide about this scene" aria-label="Ask a question" />
+      <button type="button">Send</button>
+    </div>
+
+    <div class="scroll-meter" aria-hidden="true"><i></i></div>
+  </body>
+</html>

@@ -18,15 +18,20 @@
 ```
 smooth-scroll-storytelling/
 ├── SKILL.md                  # 手法、构建顺序、踩过的坑、Do / Don't
-└── references/
-    ├── page-skeleton.html    # 页面骨架
-    ├── styles-core.css       # 变量、玻璃面、sticky 场景、定位、移动端、reduced-motion
-    ├── scroll-proxy.js       # 平滑代理层
-    ├── text-reveal.js        # 逐词拆分 + 入场时间线 + 兜底
-    ├── sticky-scene.js       # 章节级 scrub 显影
-    ├── guide-line.js         # 贯穿全页的引导线（含几何验证法）
-    └── orbital-core.js       # 随滚动响应的 canvas 主视觉
+├── references/
+│   ├── page-skeleton.html    # 页面骨架
+│   ├── styles-core.css       # 变量、玻璃面、sticky 场景、定位、移动端、reduced-motion
+│   ├── scroll-proxy.js       # 平滑代理层
+│   ├── text-reveal.js        # 逐词拆分 + 入场时间线 + 兜底
+│   ├── sticky-scene.js       # 章节级 scrub 显影
+│   ├── guide-line.js         # 贯穿全页的引导线（含几何验证法）
+│   └── orbital-core.js       # 随滚动响应的 canvas 主视觉
+└── examples/demo/            # 可直接打开的完整演示（references 的组合版）
 ```
+
+## 在线演示 / 直接打开
+
+`examples/demo/` 是一个把所有手法串起来的完整页面，**无需构建**。克隆后直接用浏览器打开 `examples/demo/index.html` 即可；若 CDN 脚本被拦截，在该目录起 `python3 -m http.server 5177` 再访问 http://localhost:5177 。
 
 ## 安装
 

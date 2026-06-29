@@ -1,0 +1,585 @@
+:root {
+  --bg: #f6f3ee;
+  --ink: #181612;
+  --muted: rgba(24, 22, 18, 0.58);
+  --line: rgba(24, 22, 18, 0.12);
+  --glass: rgba(255, 255, 255, 0.48);
+  --warm: #c79c5b;
+  --cool: #6f91b7;
+  --rose: #b9788d;
+  --shadow: 0 28px 90px rgba(35, 28, 20, 0.16);
+  --serif: "Libertinus Serif", Georgia, "Times New Roman", "Songti SC", serif;
+  /* UI sans: a quieter humanist/grotesque stack with more character than Inter,
+     no webfont dependency. Avantgarde/Optima give a calm editorial voice. */
+  --sans: "Avenir Next", "Optima", "Gill Sans", "PingFang SC", system-ui, sans-serif;
+  /* Driven by the JS scroll proxy (smoothed scroll progress). Defaults keep the
+     page looking right when JS is off or before the first frame. */
+  --field-shift: 0px;
+  --field-glow: 0.12;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 80% 8%, rgba(199, 156, 91, 0.22), transparent 28rem),
+    radial-gradient(circle at 10% 42%, rgba(111, 145, 183, 0.18), transparent 32rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  opacity: 0.12;
+  background-image:
+    linear-gradient(90deg, rgba(24, 22, 18, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(24, 22, 18, 0.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  /* The grid drifts a touch as the smoothed scroll proxy advances. */
+  background-position: var(--field-shift) calc(var(--field-shift) * 0.6);
+  mask-image: radial-gradient(circle at 50% 40%, black, transparent 78%);
+}
+
+/* Soft ambient glow that brightens with scroll — driven by the JS proxy so it
+   arrives a beat behind the scroll wheel, reinforcing the smooth feel. */
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(circle at 78% 18%, rgba(199, 156, 91, var(--field-glow)), transparent 40%),
+    radial-gradient(circle at 18% 72%, rgba(111, 145, 183, var(--field-glow)), transparent 44%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.page-shell {
+  min-height: 100vh;
+}
+
+/* The guide line is absolutely positioned over the WHOLE document (its height
+   is set in JS to the full scroll height), so it scrolls with the content and
+   threads the page top to bottom — behind the content, above the ambient
+   background. The path geometry and draw-on-scroll are set from JS. */
+.guide-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.guide-line path {
+  stroke: var(--warm);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  opacity: 0.5;
+  filter: drop-shadow(0 4px 14px rgba(199, 156, 91, 0.35));
+}
+
+/* Keep the main content flow above the guide line. The topbar, prompt bar and
+   scroll meter are already position:fixed with higher z-index, so they're fine. */
+.page-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px clamp(18px, 4vw, 58px);
+  pointer-events: none;
+}
+
+.brand,
+.chapter-nav {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.24));
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  box-shadow: 0 18px 45px rgba(30, 24, 18, 0.08);
+}
+
+.brand {
+  gap: 10px;
+  height: 42px;
+  border-radius: 99px;
+  padding: 0 14px 0 8px;
+  font-size: 15px;
+}
+
+.brand-mark {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(24, 22, 18, 0.9);
+  color: #fff7e6;
+}
+
+.chapter-nav {
+  gap: 2px;
+  min-height: 42px;
+  border-radius: 99px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.chapter-nav a {
+  border-radius: 99px;
+  padding: 8px 12px;
+  color: rgba(24, 22, 18, 0.62);
+}
+
+.chapter-nav a.is-active {
+  background: rgba(24, 22, 18, 0.08);
+  color: var(--ink);
+}
+
+.hero {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: clamp(28px, 7vw, 96px);
+  align-items: center;
+  padding: 120px clamp(22px, 7vw, 110px) 70px;
+}
+
+.hero-copy {
+  max-width: 860px;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: rgba(24, 22, 18, 0.52);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  /* Allow clean wrapping so a long heading never overflows on narrow screens. */
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+/* Medium, editorial heading scale — restrained rather than oversized, leaving
+   room for the visual reference element beside it. */
+h1 {
+  max-width: 16ch;
+  font-size: clamp(40px, 5.2vw, 64px);
+  line-height: 1.02;
+}
+
+h2 {
+  max-width: 20ch;
+  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1.08;
+}
+
+.hero-sub,
+.scene-copy p:not(.eyebrow) {
+  max-width: 620px;
+  margin: 26px 0 0;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: clamp(16px, 1.8vw, 20px);
+  line-height: 1.72;
+}
+
+.hero-visual,
+.scene-art {
+  position: relative;
+  min-height: 520px;
+}
+
+/* The canvas core is the hero's main visual reference, so give it the full
+   panel and let it sit slightly larger than its box for an immersive feel. */
+.field-canvas {
+  position: absolute;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.glass-card,
+.art-card {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.2));
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  box-shadow: var(--shadow);
+}
+
+/* A small progress HUD chip in the corner — a label for the canvas core, not a
+   competing block. */
+.main-card {
+  top: 6%;
+  left: 0;
+  display: grid;
+  width: min(50vw, 190px);
+  gap: 6px;
+  align-content: start;
+  border-radius: 18px;
+  padding: 16px 18px;
+}
+
+.main-card strong {
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 0.9;
+}
+
+.main-card i {
+  display: block;
+  height: 7px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--warm), transparent);
+}
+
+.mini-label {
+  color: rgba(24, 22, 18, 0.52);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* The canvas core now carries the ring motif, so the standalone ring is hidden
+   to keep the centerpiece clean. */
+.floating-ring {
+  display: none;
+}
+
+.grain-plane {
+  position: absolute;
+  right: 22%;
+  top: 17%;
+  width: 180px;
+  aspect-ratio: 3 / 4;
+  border-radius: 50% 50% 44% 48%;
+  background: radial-gradient(circle at 50% 30%, rgba(199, 156, 91, 0.32), transparent 70%);
+  filter: blur(1px);
+}
+
+.story-section {
+  position: relative;
+  min-height: 200vh;
+}
+
+.sticky-scene {
+  position: sticky;
+  top: 0;
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: minmax(300px, 0.86fr) minmax(0, 1.14fr);
+  gap: clamp(24px, 6vw, 92px);
+  align-items: center;
+  padding: 110px clamp(22px, 7vw, 110px);
+}
+
+.sticky-scene.reverse {
+  grid-template-columns: minmax(0, 1.14fr) minmax(300px, 0.86fr);
+}
+
+.sticky-scene.reverse .scene-art {
+  order: 2;
+}
+
+.scene-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.art-card {
+  left: 50%;
+  top: 50%;
+  display: grid;
+  width: min(80vw, 360px);
+  min-height: 310px;
+  gap: 16px;
+  align-content: end;
+  border-radius: 30px;
+  padding: 26px;
+  transform: translate(-50%, -50%);
+}
+
+.art-card.wide {
+  width: min(82vw, 430px);
+}
+
+.art-card span {
+  color: rgba(24, 22, 18, 0.42);
+  font-size: 13px;
+}
+
+.art-card strong {
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.art-card p {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.8;
+}
+
+.orb-a {
+  width: 220px;
+  height: 220px;
+  left: 8%;
+  top: 20%;
+  background: radial-gradient(circle, rgba(199, 156, 91, 0.44), transparent 68%);
+}
+
+.orb-b {
+  width: 320px;
+  height: 320px;
+  right: 0;
+  bottom: 4%;
+  background: radial-gradient(circle, rgba(111, 145, 183, 0.3), transparent 70%);
+}
+
+[data-accent="cool"] .orb-a {
+  background: radial-gradient(circle, rgba(111, 145, 183, 0.42), transparent 68%);
+}
+
+[data-accent="cool"] .orb-b {
+  background: radial-gradient(circle, rgba(151, 187, 213, 0.34), transparent 70%);
+}
+
+[data-accent="rose"] .orb-a {
+  background: radial-gradient(circle, rgba(185, 120, 141, 0.38), transparent 68%);
+}
+
+[data-accent="rose"] .orb-b {
+  background: radial-gradient(circle, rgba(199, 156, 91, 0.24), transparent 70%);
+}
+
+.word {
+  display: inline-block;
+  white-space: pre-wrap;
+  will-change: transform, opacity, filter;
+}
+
+.end-panel {
+  display: grid;
+  min-height: 78vh;
+  place-items: center;
+  align-content: center;
+  gap: 26px;
+  padding: 80px clamp(22px, 7vw, 110px) 160px;
+  text-align: center;
+}
+
+.end-panel h2 {
+  max-width: 920px;
+}
+
+.round-button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  border: 1px solid rgba(24, 22, 18, 0.14);
+  border-radius: 99px;
+  padding: 0 20px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(18px);
+  font-family: var(--sans);
+}
+
+.prompt-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 30;
+  display: grid;
+  width: min(calc(100vw - 28px), 620px);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 99px;
+  padding: 8px 8px 8px 14px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.28));
+  backdrop-filter: blur(30px) saturate(160%) brightness(1.08);
+  -webkit-backdrop-filter: blur(30px) saturate(160%) brightness(1.08);
+  box-shadow: 0 22px 70px rgba(30, 24, 18, 0.14);
+  transform: translateX(-50%);
+}
+
+.spark {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--warm);
+  box-shadow: 0 0 22px var(--warm);
+}
+
+.prompt-bar input {
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+}
+
+.prompt-bar button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 99px;
+  padding: 0 14px;
+  background: rgba(24, 22, 18, 0.9);
+  color: #fff8ea;
+  cursor: pointer;
+}
+
+.scroll-meter {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  z-index: 28;
+  width: 3px;
+  height: 170px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(24, 22, 18, 0.1);
+  transform: translateY(-50%);
+}
+
+.scroll-meter i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .chapter-nav {
+    display: none;
+  }
+
+  .hero,
+  .sticky-scene,
+  .sticky-scene.reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .sticky-scene.reverse .scene-art {
+    order: 0;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 112px;
+  }
+
+  .hero-visual,
+  .scene-art {
+    min-height: 360px;
+  }
+
+  .story-section {
+    min-height: 150vh;
+  }
+
+  .sticky-scene {
+    /* On mobile the scene is a single column; let it grow with content and
+       sit at the top of the sticky viewport instead of vertically centering,
+       so the art layer and copy never overlap. */
+    min-height: auto;
+    align-items: start;
+    gap: 28px;
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  /* Keep the end CTA and last heading clear of the fixed prompt bar. */
+  .end-panel {
+    padding-bottom: 120px;
+  }
+
+  .prompt-bar {
+    bottom: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
