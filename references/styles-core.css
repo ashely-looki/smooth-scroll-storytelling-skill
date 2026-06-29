@@ -1,0 +1,126 @@
+/* Core CSS for the smooth-scroll storytelling page. The structurally important
+   rules only — fill in glass-card / orb / prompt-bar visuals to taste. */
+
+:root {
+  --bg: #f6f3ee;
+  --ink: #181612;
+  --muted: rgba(24, 22, 18, 0.58);
+  --warm: #c79c5b;
+  --shadow: 0 28px 90px rgba(35, 28, 20, 0.16);
+  --serif: "Libertinus Serif", Georgia, "Times New Roman", "Songti SC", serif;
+  /* UI sans: avoid Inter/Roboto/Geist/Plus Jakarta/Space Grotesk/Fraunces.
+     One variable = one place to change. */
+  --sans: "Avenir Next", "Optima", "Gill Sans", "PingFang SC", system-ui, sans-serif;
+  /* Driven by the JS scroll proxy; defaults keep the page right before JS runs. */
+  --field-shift: 0px;
+  --field-glow: 0.12;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  position: relative; /* positioning context for the absolute guide-line SVG */
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+}
+
+/* Ambient glow driven by the proxy (custom props set in the ticker). */
+body::after {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; content: "";
+  background:
+    radial-gradient(circle at 78% 18%, rgba(199, 156, 91, var(--field-glow)), transparent 40%),
+    radial-gradient(circle at 18% 72%, rgba(111, 145, 183, var(--field-glow)), transparent 44%);
+}
+
+/* Keep main content above the guide line; fixed bars carry their own z-index. */
+.page-shell { position: relative; z-index: 1; min-height: 100vh; }
+
+/* Full-document guide line — absolute over the WHOLE page (height set in JS). */
+.guide-line {
+  position: absolute; top: 0; left: 0; z-index: 0;
+  width: 100%; height: 100%; pointer-events: none;
+}
+.guide-line path {
+  stroke: var(--warm); stroke-width: 1.6; stroke-linecap: round;
+  opacity: 0.5; filter: drop-shadow(0 4px 14px rgba(199, 156, 91, 0.35));
+}
+
+/* ---- Typography: restrained editorial scale, room for a visual ---- */
+h1, h2 {
+  margin: 0; font-weight: 400; letter-spacing: -0.01em;
+  overflow-wrap: anywhere; text-wrap: balance; /* long lines wrap cleanly */
+}
+h1 { max-width: 16ch; font-size: clamp(40px, 5.2vw, 64px); line-height: 1.02; }
+h2 { max-width: 20ch; font-size: clamp(30px, 3.6vw, 44px); line-height: 1.08; }
+.eyebrow {
+  margin: 0 0 14px; color: rgba(24, 22, 18, 0.52); font-family: var(--sans);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.hero-sub, .scene-copy p:not(.eyebrow) {
+  max-width: 620px; margin: 26px 0 0; color: var(--muted);
+  font-family: var(--sans); font-size: clamp(16px, 1.8vw, 20px); line-height: 1.72;
+}
+
+/* The split words — promote only what animates. */
+.word { display: inline-block; white-space: pre-wrap; will-change: transform, opacity, filter; }
+
+/* ---- Hero + canvas centerpiece ---- */
+.hero {
+  display: grid; min-height: 100vh; align-items: center;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: clamp(28px, 7vw, 96px); padding: 120px clamp(22px, 7vw, 110px) 70px;
+}
+.hero-visual, .scene-art { position: relative; min-height: 520px; }
+.field-canvas { /* the centerpiece — let it fill, slightly oversize */
+  position: absolute; inset: -8%; width: 116%; height: 116%;
+  pointer-events: none; opacity: 0; /* faded in by the intro timeline */
+}
+
+/* ---- Sticky scroll scenes ---- */
+.story-section { position: relative; min-height: 200vh; }
+.sticky-scene {
+  position: sticky; top: 0; display: grid; min-height: 100vh; align-items: center;
+  grid-template-columns: minmax(300px, 0.86fr) minmax(0, 1.14fr);
+  gap: clamp(24px, 6vw, 92px); padding: 110px clamp(22px, 7vw, 110px);
+}
+.sticky-scene.reverse { grid-template-columns: minmax(0, 1.14fr) minmax(300px, 0.86fr); }
+.sticky-scene.reverse .scene-art { order: 2; }
+
+/* Glass surfaces */
+.glass-card, .art-card {
+  position: absolute; border: 1px solid rgba(255, 255, 255, 0.46);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.2));
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  box-shadow: var(--shadow);
+}
+
+/* ---- Mobile: single column, no sticky overlap, clear the prompt bar ---- */
+@media (max-width: 900px) {
+  .chapter-nav { display: none; }
+  .hero, .sticky-scene, .sticky-scene.reverse { grid-template-columns: 1fr; }
+  .sticky-scene.reverse .scene-art { order: 0; }
+  .hero { min-height: auto; padding-top: 112px; }
+  .hero-visual, .scene-art { min-height: 360px; }
+  .story-section { min-height: 150vh; }
+  .sticky-scene {                 /* grow with content, align top — no overlap */
+    min-height: auto; align-items: start; gap: 28px;
+    padding-top: 96px; padding-bottom: 96px;
+  }
+  .end-panel { padding-bottom: 120px; } /* clear the fixed prompt bar */
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

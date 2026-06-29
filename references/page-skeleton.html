@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smooth Scroll Storytelling</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- GSAP from CDN — no build step. defer so app.js runs after them. -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <!-- Full-document guide line (sized + drawn in JS). Behind the content. -->
+    <svg class="guide-line" preserveAspectRatio="none" aria-hidden="true">
+      <path data-guide-path fill="none" vector-effect="non-scaling-stroke" />
+    </svg>
+
+    <main class="page-shell">
+      <header class="topbar" aria-label="Demo header">
+        <a class="brand" href="#intro"><span class="brand-mark">S</span><span>Smooth scroll study</span></a>
+        <nav class="chapter-nav" aria-label="Chapters">
+          <a href="#intro">Intro</a><a href="#guide">Guide</a><a href="#ask">Ask</a>
+        </nav>
+      </header>
+
+      <section class="hero" id="intro">
+        <div class="hero-copy">
+          <p class="eyebrow">GSAP motion replica</p>
+          <h1 data-split>Turn scrolling into a story that slowly comes into focus.</h1>
+          <p class="hero-sub">Scroll progress is smoothed; words fade in word by word from blur to sharp.</p>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <canvas class="field-canvas" data-field></canvas>
+          <div class="glass-card main-card">
+            <span class="mini-label">progress</span><strong data-progress-label>0%</strong><i></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- Story section: tall (~200vh), inner scene is sticky. Repeat with -->
+      <!-- different ids and add class="reverse" on .sticky-scene to flip sides. -->
+      <section class="story-section" id="guide">
+        <div class="sticky-scene">
+          <div class="scene-art">
+            <div class="art-card"><span>scroll feel</span><strong>Absolute-feeling scroll</strong>
+              <p>Native scrolling stays, but elements feel pulled along a softer timeline.</p></div>
+          </div>
+          <article class="scene-copy">
+            <p class="eyebrow">Soften the scroll</p>
+            <h2 data-split>Don't chase the wheel directly — soften the scroll progress first.</h2>
+            <p data-split>ScrollTrigger scrub plus a GSAP timeline let text and visuals arrive half a beat late.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="end-panel">
+        <p class="eyebrow">Ready</p>
+        <h2 data-split>This motion can move to any story page, portfolio, or AI-guided tour.</h2>
+        <a class="round-button" href="#intro">Watch again</a>
+      </section>
+    </main>
+
+    <!-- Fixed glass "AI guide" prompt bar -->
+    <div class="prompt-bar" aria-label="AI prompt mock">
+      <span class="spark"></span>
+      <input value="Ask the guide about this scene" aria-label="Ask a question" />
+      <button type="button">Send</button>
+    </div>
+
+    <div class="scroll-meter" aria-hidden="true"><i></i></div>
+  </body>
+</html>
