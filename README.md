@@ -1,5 +1,7 @@
 # smooth-scroll-storytelling
 
+### 🔗 在线演示 → **<https://ashely-looki.github.io/smooth-scroll-storytelling-skill/>**
+
 一个 Claude 技能（Skill），用于打造**安静、编辑感、弹性平滑的滚动叙事网页**——复刻 [solomei.ai](https://solomei.ai) 那种动效手感，纯 HTML/CSS/GSAP，**无需构建步骤**。
 
 它把从头到尾做一个这样的页面所沉淀的经验整理成了一套配方，包含踩过的坑，并附上经过验证、可直接复用的代码片段。
@@ -29,9 +31,10 @@ smooth-scroll-storytelling/
 └── examples/demo/            # 可直接打开的完整演示（references 的组合版）
 ```
 
-## 在线演示 / 直接打开
+## 演示
 
-`examples/demo/` 是一个把所有手法串起来的完整页面，**无需构建**。克隆后直接用浏览器打开 `examples/demo/index.html` 即可；若 CDN 脚本被拦截，在该目录起 `python3 -m http.server 5177` 再访问 http://localhost:5177 。
+- **在线直接看**（无需 clone）：<https://ashely-looki.github.io/smooth-scroll-storytelling-skill/>
+- **本地运行**：`examples/demo/` 是把所有手法串起来的完整页面，**无需构建**。克隆后直接用浏览器打开 `examples/demo/index.html` 即可；若 CDN 脚本被拦截，在该目录起 `python3 -m http.server 5177` 再访问 http://localhost:5177 。
 
 ## 安装
 
